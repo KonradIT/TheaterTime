@@ -13,11 +13,7 @@ public class TheaterWear extends Activity {
 
     private TextView mTextView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-    }
 
 
 

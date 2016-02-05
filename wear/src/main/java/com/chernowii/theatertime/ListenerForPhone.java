@@ -1,5 +1,7 @@
 package com.chernowii.theatertime;
 
+import android.content.Intent;
+
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -18,10 +20,14 @@ public class ListenerForPhone extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         if (messageEvent.getPath().equals(on)) {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
             try {
                 Process su = Runtime.getRuntime().exec("su");
                 DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("cat /sdcard/theaterShell > /dev/input/event0; cat /sdcard/theater2 > /dev/input/event0;");
+                outputStream.writeBytes("cat /sdcard/theaterShell > /dev/input/event0;");
                 outputStream.flush();
                 outputStream.writeBytes("exit\n");
                 outputStream.flush();

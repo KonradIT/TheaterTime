@@ -55,7 +55,8 @@
         android:text="Set Start Time"
         android:id="@+id/setStartTime"
         android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="setStartingTime" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,7 +74,8 @@
         android:text="SET STOP TIME"
         android:id="@+id/setStopTime"
         android:layout_below="@+id/textView3"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="setEndingTime" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -99,14 +101,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/startTime"
-        android:layout_above="@+id/textView5"
-        android:layout_toEndOf="@+id/textView4" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/stopTime"
         android:textColor="@color/text_color"
         android:layout_alignBottom="@+id/textView5"
@@ -119,4 +113,13 @@
         android:id="@+id/button"
         android:layout_below="@+id/textView5"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/startTime"
+        android:layout_above="@+id/textView5"
+        android:textColor="@color/text_color"
+        android:layout_alignStart="@+id/stopTime" />
 </RelativeLayout>

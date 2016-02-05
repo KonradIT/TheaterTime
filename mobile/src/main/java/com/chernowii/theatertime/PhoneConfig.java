@@ -1,5 +1,6 @@
 package com.chernowii.theatertime;
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -19,10 +22,13 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
+import java.util.Calendar;
+
 public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private static final String on = "/on";
     private static final String off = "/off";
-
+    public String START_TIME = "00:00";
+    public String STOP_TIME = "00:00";
     Node wearNode;
     GoogleApiClient wearGoogleApiClient;
     private boolean mResolvingError=false;
@@ -40,14 +46,7 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
     }
 
     @Override
@@ -125,6 +124,42 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
 
     }
 
+    //time triggers
+
+
+    public void setStartingTime(View v){
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(PhoneConfig.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                START_TIME = selectedHour + ":" + selectedMinute;
+                TextView startTime = (TextView)findViewById(R.id.startTime);
+                startTime.setText(START_TIME);
+            }
+        }, hour, minute, true);
+        mTimePicker.setTitle("Select Stopping Time");
+        mTimePicker.show();
+    }
+
+    public void setEndingTime(View v){
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(PhoneConfig.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                STOP_TIME = selectedHour + ":" + selectedMinute;
+                TextView stopTime = (TextView)findViewById(R.id.stopTime);
+                stopTime.setText(STOP_TIME);
+            }
+        }, hour, minute, true);
+        mTimePicker.setTitle("Select Stopping Time");
+        mTimePicker.show();
+    }
     //config
 
     @Override
