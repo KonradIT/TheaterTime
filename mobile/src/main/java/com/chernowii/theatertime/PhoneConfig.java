@@ -200,4 +200,61 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(),                     "Error, not connected to phone!", Toast.LENGTH_SHORT).show();
     }
+
+public void CallTheaterOn(){
+    if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
+        //
+        Wearable.MessageApi.sendMessage(
+                wearGoogleApiClient, wearNode.getId(), on, null).setResultCallback(
+
+                new ResultCallback<MessageApi.SendMessageResult>() {
+                    @Override
+                    public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+
+                        if (!sendMessageResult.getStatus().isSuccess()) {
+                            Log.e("TAG", "Failed to send message with status code: "
+                                    + sendMessageResult.getStatus().getStatusCode());
+                        }
+                    }
+                }
+        );
+    }else{
+        Toast.makeText(getApplicationContext(),
+                "No connection to phone", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),
+                "Connect watch to phone!", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+}
+
+    public void CallTheaterOff(){
+        if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
+            //
+            Wearable.MessageApi.sendMessage(
+                    wearGoogleApiClient, wearNode.getId(), on, null).setResultCallback(
+
+                    new ResultCallback<MessageApi.SendMessageResult>() {
+                        @Override
+                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+
+                            if (!sendMessageResult.getStatus().isSuccess()) {
+                                Log.e("TAG", "Failed to send message with status code: "
+                                        + sendMessageResult.getStatus().getStatusCode());
+                            }
+                        }
+                    }
+            );
+        }else{
+            Toast.makeText(getApplicationContext(),
+                    "No connection to phone", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),
+                    "Connect watch to phone!", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+    }
+
 }

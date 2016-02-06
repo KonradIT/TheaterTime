@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:enabled="true" android:name=".TheaterOn">
+            <intent-filter>
+                <action android:name="com.chernowii.theatertime.THEATER_ON" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

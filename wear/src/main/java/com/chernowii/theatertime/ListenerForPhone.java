@@ -39,7 +39,7 @@ public class ListenerForPhone extends WearableListenerService {
             try {
                 Process su = Runtime.getRuntime().exec("su");
                 DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("input keyevent 4\n input keyevent 26\n");
+                outputStream.writeBytes("input keyevent 26\n");
                 outputStream.flush();
                 outputStream.writeBytes("exit\n");
                 outputStream.flush();
