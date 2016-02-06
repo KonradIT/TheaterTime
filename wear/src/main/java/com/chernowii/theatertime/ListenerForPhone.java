@@ -20,70 +20,31 @@ public class ListenerForPhone extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         if (messageEvent.getPath().equals(on)) {
-            Intent startMain = new Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
             try {
-                Process su = Runtime.getRuntime().exec("su");
-                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("cat /sdcard/theaterShell > /dev/input/event0;");
-                outputStream.flush();
-                outputStream.writeBytes("exit\n");
-                outputStream.flush();
-                su.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            try{ Thread.sleep(600); }catch(InterruptedException e){ }
-            try {
-                Process su = Runtime.getRuntime().exec("su");
-                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("cat /sdcard/theater2 > /dev/input/event0;");
-                outputStream.flush();
-                outputStream.writeBytes("exit\n");
-                outputStream.flush();
-                su.waitFor();
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+            String sqliteON = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \"update global set value='1' where name='theater_mode_on';\" ";
+            outputStream.writeBytes("settings put global theater_mode_on 1\n" + sqliteON + "\n");
+            outputStream.flush();
+
+            outputStream.writeBytes("exit\n");
+            outputStream.flush();
+            su.waitFor();
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
         if (messageEvent.getPath().equals(off)) {
-            try {
-                Process su = Runtime.getRuntime().exec("su");
-                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("cat /sdcard/theater2 > /dev/input/event0;");
-                outputStream.flush();
-                outputStream.writeBytes("exit\n");
-                outputStream.flush();
-                su.waitFor();
-            } catch (IOException | InterruptedException e) {
+            try{
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream os = new DataOutputStream(su.getOutputStream());
+            os.writeBytes("settings put global theater_mode_on 0\n");
+            os.flush();
+            os.close();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            try {
-                Process su = Runtime.getRuntime().exec("su");
-                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("cat /sdcard/theater2 > /dev/input/event0;");
-                outputStream.flush();
-                outputStream.writeBytes("exit\n");
-                outputStream.flush();
-                su.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
-                Process su = Runtime.getRuntime().exec("su");
-                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("cat /sdcard/theater2 > /dev/input/event0;");
-                outputStream.flush();
-                outputStream.writeBytes("exit\n");
-                outputStream.flush();
-                su.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-
         }
 
     }
