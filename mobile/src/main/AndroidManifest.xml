@@ -24,6 +24,7 @@
                 <action android:name="com.chernowii.theatertime.THEATER_ON" />
             </intent-filter>
         </receiver>
+        <activity android:label="@string/app_name" android:name=".SendMessageToWatch"/>
     </application>
 
 </manifest>

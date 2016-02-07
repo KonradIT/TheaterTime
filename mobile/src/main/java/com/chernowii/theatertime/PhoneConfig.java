@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -33,6 +34,7 @@ import java.util.Calendar;
 public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private static final String on = "/on";
     private static final String off = "/off";
+    public static final String CURRENT_START_ALARM = "PrefsFile";
     public String START_TIME = "00:00";
     public String STOP_TIME = "00:00";
     public int START_TIME_HH = 00;
@@ -57,7 +59,14 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
                 .build();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        SharedPreferences prefs = getSharedPreferences(CURRENT_START_ALARM, MODE_PRIVATE);
+        String restoredText = prefs.getString("text", null);
+        if (restoredText != null) {
+            String start = prefs.getString("start", "No alarm set");
+            String stop = prefs.getString("stop", "No alarm set");
+            TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
+            currentTimer.setText(start + " - " + stop);
+        }
 
     }
 
@@ -178,19 +187,28 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     }
 
     public void setStartTimeConfig(View v){
-        alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), TheaterOn.class);
-        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, START_TIME_HH);
-        calendar.set(Calendar.MINUTE, START_TIME_MM);
-
-
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
+        Calendar calendaram = Calendar.getInstance();
+        calendaram.set(Calendar.HOUR_OF_DAY, START_TIME_HH);
+        calendaram.set(Calendar.MINUTE, START_TIME_MM);
+        calendaram.set(Calendar.SECOND, 0);
+        calendaram.set(Calendar.AM_PM, Calendar.PM);
+        Intent myIntent = new Intent(PhoneConfig.this, TheaterOn.class);
+        PendingIntent pendingIntentam = PendingIntent.getBroadcast(PhoneConfig.this, 0, myIntent, 0);
+        AlarmManager alarmManageram = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManageram.set(AlarmManager.RTC, calendaram.getTimeInMillis(), pendingIntentam);
+        Toast.makeText(getApplicationContext(),"Time configuration saved!",Toast.LENGTH_LONG).show();
+        SharedPreferences.Editor editor = getSharedPreferences(CURRENT_START_ALARM, MODE_PRIVATE).edit();
+        editor.putString("start", START_TIME);
+        editor.putString("stop", STOP_TIME);
+        editor.apply();
+        SharedPreferences prefs = getSharedPreferences(CURRENT_START_ALARM, MODE_PRIVATE);
+        String restoredText = prefs.getString("text", null);
+        if (restoredText != null) {
+            String start = prefs.getString("start", "No alarm set");
+            String stop = prefs.getString("stop", "No alarm set");
+            TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
+            currentTimer.setText(start + " - " + stop);
+        }
     }
     //config
 
@@ -232,32 +250,6 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(),                     "Error, not connected to phone!", Toast.LENGTH_SHORT).show();
     }
-public final void TimerSendOn(){
-    if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
-        //
-        Wearable.MessageApi.sendMessage(
-                wearGoogleApiClient, wearNode.getId(), on, null).setResultCallback(
-
-                new ResultCallback<MessageApi.SendMessageResult>() {
-                    @Override
-                    public void onResult(MessageApi.SendMessageResult sendMessageResult) {
-
-                        if (!sendMessageResult.getStatus().isSuccess()) {
-                            Log.e("TAG", "Failed to send message with status code: "
-                                    + sendMessageResult.getStatus().getStatusCode());
-                        }
-                    }
-                }
-        );
-    }else{
-        Toast.makeText(getApplicationContext(),
-                "No connection to phone", Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(),
-                "Connect watch to phone!", Toast.LENGTH_SHORT).show();
-
-    }
-
-}
 
 }
 
