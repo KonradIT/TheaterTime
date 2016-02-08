@@ -48,6 +48,8 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     public int STOP_TIME_MM = 00;
     Node wearNode;
     GoogleApiClient wearGoogleApiClient;
+    Node wearTwoNode;
+    GoogleApiClient wearTwoGoogleApiClient;
     private boolean mResolvingError=false;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
@@ -91,20 +93,30 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
         currentTimer.setText(startTime + " - " + stopTime);
 
-        String alarmOn;
+       checkAlarm();
 
+    }
+    public void checkAlarm(){
+        String alarmOn;
+        SharedPreferences settings;
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
         alarmOn = settings.getString(alarm, null); //2
         //assert alarmOn != null;
         if (alarmOn != null) {
             if (alarmOn.equals(on)){
-                Toast.makeText(getApplicationContext(),"TEST",Toast.LENGTH_LONG).show();
+
+                Toast.makeText(getApplicationContext(),"Theater Mode On",Toast.LENGTH_LONG).show();
+
+                SharedPreferences.Editor editor;
+                settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+                editor = settings.edit(); //2
+                editor.clear();
+                editor.commit();
             }
             else{
 
             }
         }
-
     }
 
     @Override
@@ -125,7 +137,7 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         switch (item.getItemId()) {
             case R.id.action_about:
                 new AlertDialog.Builder(this)
-                        .setTitle("About GoProHero")
+                        .setTitle("About Theater Time")
                         .setMessage("Developed by Konrad Iturbe\n/u/konrad-iturbe | @KonradIT in XDA and GitHub\nHope you like the app!\nVersion: 1.0")
                         .setPositiveButton(R.string.issues, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -208,11 +220,11 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         }
 
     }
-    public void alarmSendOn() {
+    public void sendMessage(String message) {
         if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
             //
             Wearable.MessageApi.sendMessage(
-                    wearGoogleApiClient, wearNode.getId(), on, null).setResultCallback(
+                    wearGoogleApiClient, wearNode.getId(), message, null).setResultCallback(
 
                     new ResultCallback<MessageApi.SendMessageResult>() {
                         @Override
@@ -232,6 +244,7 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
                     "Connect watch to phone!", Toast.LENGTH_SHORT).show();
 
         }
+
 
     }
 
