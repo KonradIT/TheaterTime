@@ -40,6 +40,8 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     public static final String CURRENT_START_ALARM = "PrefsFile";
     public String START_TIME = "00:00";
     public String STOP_TIME = "00:00";
+
+    public String alarm = "";
     public int START_TIME_HH = 00;
     public int START_TIME_MM = 00;
     public int STOP_TIME_HH = 00;
@@ -88,8 +90,19 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         stopTime = settings.getString(stop, null); //2
         TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
         currentTimer.setText(startTime + " - " + stopTime);
-        if (WELCOME == 0){
 
+        String alarmOn;
+
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+        alarmOn = settings.getString(alarm, null); //2
+        //assert alarmOn != null;
+        if (alarmOn != null) {
+            if (alarmOn.equals(on)){
+                Toast.makeText(getApplicationContext(),"TEST",Toast.LENGTH_LONG).show();
+            }
+            else{
+
+            }
         }
 
     }
@@ -195,6 +208,35 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         }
 
     }
+    public void alarmSendOn() {
+        if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
+            //
+            Wearable.MessageApi.sendMessage(
+                    wearGoogleApiClient, wearNode.getId(), on, null).setResultCallback(
+
+                    new ResultCallback<MessageApi.SendMessageResult>() {
+                        @Override
+                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+
+                            if (!sendMessageResult.getStatus().isSuccess()) {
+                                Log.e("TAG", "Failed to send message with status code: "
+                                        + sendMessageResult.getStatus().getStatusCode());
+                            }
+                        }
+                    }
+            );
+        }else{
+            Toast.makeText(getApplicationContext(),
+                    "No connection to phone", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),
+                    "Connect watch to phone!", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+
+
 
     //time triggers
 
@@ -243,13 +285,19 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         calendaram.set(Calendar.MINUTE, START_TIME_MM);
         calendaram.set(Calendar.SECOND, 0);
         calendaram.set(Calendar.AM_PM, Calendar.PM);
-        Intent myIntent = new Intent(PhoneConfig.this, TheaterOn.class);
-        PendingIntent pendingIntentam = PendingIntent.getBroadcast(PhoneConfig.this, 0, myIntent, 0);
+        Intent myIntent = new Intent(PhoneConfig.this, PhoneConfig.class);
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+        editor = settings.edit(); //2
+
+        editor.putString(alarm, on);
+        editor.commit();
+        PendingIntent pendingIntentam = PendingIntent.getActivity(PhoneConfig.this, 0, myIntent, 0);
         AlarmManager alarmManageram = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManageram.set(AlarmManager.RTC, calendaram.getTimeInMillis(), pendingIntentam);
         Toast.makeText(getApplicationContext(),"Time configuration saved!",Toast.LENGTH_LONG).show();
-        SharedPreferences settings;
-        SharedPreferences.Editor editor;
+
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
         editor = settings.edit(); //2
 
