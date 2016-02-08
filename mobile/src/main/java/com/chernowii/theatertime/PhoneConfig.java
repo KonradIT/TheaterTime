@@ -5,12 +5,15 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -106,8 +109,35 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                new AlertDialog.Builder(this)
+                        .setTitle("About GoProHero")
+                        .setMessage("Developed by Konrad Iturbe\n/u/konrad-iturbe | @KonradIT in XDA and GitHub\nHope you like the app!\nVersion: 1.0")
+                        .setPositiveButton(R.string.issues, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent githubIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.github.com/KonradIT/theatertime/issues"));
+                                startActivity(githubIntent);
+                            }
+                        })
+                        .setNeutralButton(R.string.webpage, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://chernowii.com"));
+                                startActivity(webIntent);
+                            }
+                        })
+
+                        .setNegativeButton(R.string.mail, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent mailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                        "mailto", "mail@chernowii.com", null));
+                                startActivity(mailIntent);
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .show();
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
