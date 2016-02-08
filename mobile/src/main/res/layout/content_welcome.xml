@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.chernowii.theatertime.Welcome"
+    tools:showIn="@layout/activity_welcome">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView"
+        android:layout_alignParentStart="true" >
+
+    </ScrollView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignTop="@+id/scrollView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Theater Time"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Theater Time is an automation tool for Theater Mode in Android Wear watches, you can turn it on/off from your phone using the Widget or by setting a start and stop timer for Theater mode, so it does your watch does not waste battery while you sleep, work...\nThe Android Wear watch needs to be rooted in order for it to control the Theater Mode, you can find root guides on XDA-developers.com for your specific Android Wear watch. The phone does not need root access. \n\nComing soon:\n*Tasker triggers\n*Widget\n*Intents\n\nClick start to use the app!"
+        android:id="@+id/textView8"
+        android:layout_below="@+id/textView3"
+        android:layout_alignStart="@+id/scrollView"
+        android:textColor="#000000" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="START"
+        android:id="@+id/button2"
+        android:layout_below="@+id/textView8"
+        android:layout_centerHorizontal="true"
+        android:onClick="startApp" />
+</RelativeLayout>

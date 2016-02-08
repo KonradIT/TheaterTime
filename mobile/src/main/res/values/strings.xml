@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Theater Time</string>
     <string name="action_settings">Settings</string>
+
+    <string name="section_format">%1$d</string>
+    <string name="section_label_text_1">Theater Time is a automation tool that manages the Theater Mode status of your Android Wear watch</string>
+    <string name="section_label_text_2">What is Theater Mode?</string>
+    <string name="section_label_text_3">Theater Mode is a function in the Android Wear OS that dims your screen when not in use or when the watchface produces light, such as in a cinema. You can turn on Theater Mode by sliding the settings panne in your watch, and swipe left. This app aims to automate that process.</string>
+    <string name="section_label_text_4">find out how to use the app</string>
+    <string name="section2_label_text_3">You can use the buttons to trigger theater mode, or the alarm timer to set start and stop times for Theater Mode, such as when you sleep, when you go to work...\nNOTE: YOUR WATCH NEEDS TO BE ROOTED, IF ITS NOT ROOTED IT WILL NOT WORK.\nYour phone does not need to be rooted, only your watch. You can find guides on how to root your watch on XDA-developers.com</string>
+    <string name="section2_label_text_2">How to use Theater Time</string>
+    <string name="section2_label_text_1">Theater Time</string>
+    <string name="section2_label_text_4">start using the app</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_welcome">Welcome</string>
 </resources>

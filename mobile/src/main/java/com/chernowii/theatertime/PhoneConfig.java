@@ -46,12 +46,28 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     private boolean mResolvingError=false;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
-
+    public static final String PREFS_NAME = "Preferences";
+   // SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    public static final String start = "start_string";
+    public static final String stop = "stop_string";
+    public int WELCOME;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_config);
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
 
+        if (isFirstRun) {
+            //show start activity
+
+            startActivity(new Intent(PhoneConfig.this, Welcome.class));
+
+        }
+
+
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).commit();
         wearGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(this)
@@ -59,13 +75,18 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
                 .build();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        SharedPreferences prefs = getSharedPreferences(CURRENT_START_ALARM, MODE_PRIVATE);
-        String restoredText = prefs.getString("text", null);
-        if (restoredText != null) {
-            String start = prefs.getString("start", "No alarm set");
-            String stop = prefs.getString("stop", "No alarm set");
-            TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
-            currentTimer.setText(start + " - " + stop);
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+        String startTime;
+        String stopTime;
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+        startTime = settings.getString(start, null); //2
+        stopTime = settings.getString(stop, null); //2
+        TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
+        currentTimer.setText(startTime + " - " + stopTime);
+        if (WELCOME == 0){
+
         }
 
     }
@@ -197,18 +218,22 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         AlarmManager alarmManageram = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManageram.set(AlarmManager.RTC, calendaram.getTimeInMillis(), pendingIntentam);
         Toast.makeText(getApplicationContext(),"Time configuration saved!",Toast.LENGTH_LONG).show();
-        SharedPreferences.Editor editor = getSharedPreferences(CURRENT_START_ALARM, MODE_PRIVATE).edit();
-        editor.putString("start", START_TIME);
-        editor.putString("stop", STOP_TIME);
-        editor.apply();
-        SharedPreferences prefs = getSharedPreferences(CURRENT_START_ALARM, MODE_PRIVATE);
-        String restoredText = prefs.getString("text", null);
-        if (restoredText != null) {
-            String start = prefs.getString("start", "No alarm set");
-            String stop = prefs.getString("stop", "No alarm set");
-            TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
-            currentTimer.setText(start + " - " + stop);
-        }
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+        editor = settings.edit(); //2
+
+        editor.putString(start, START_TIME);
+        editor.putString(stop, STOP_TIME);//3
+        editor.commit(); //4
+
+        String startTime;
+        String stopTime;
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+        startTime = settings.getString(start, null); //2
+        stopTime = settings.getString(stop, null); //2
+        TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
+        currentTimer.setText(startTime + " - " + stopTime);
     }
     //config
 

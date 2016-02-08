@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.chernowii.theatertime">
+
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,12 +21,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:enabled="true" android:name=".TheaterOn">
+
+        <receiver
+            android:name=".TheaterOn"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="com.chernowii.theatertime.THEATER_ON" />
             </intent-filter>
         </receiver>
-        <activity android:label="@string/app_name" android:name=".SendMessageToWatch"/>
+
+        <activity
+            android:name=".SendMessageToWatch"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".Welcome"
+            android:label="@string/title_activity_welcome"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

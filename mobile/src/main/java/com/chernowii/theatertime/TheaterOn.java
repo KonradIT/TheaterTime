@@ -24,9 +24,7 @@ import com.google.android.gms.wearable.Wearable;
 public class TheaterOn extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent scheduledIntent = new Intent(context, SendMessageToWatch.class);
-        scheduledIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(scheduledIntent);
+        
         Toast.makeText(context, "Theater ON (Started)", Toast.LENGTH_LONG).show();
     }
 
