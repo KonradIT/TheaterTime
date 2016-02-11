@@ -93,30 +93,8 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
         currentTimer.setText(startTime + " - " + stopTime);
 
-       checkAlarm();
 
-    }
-    public void checkAlarm(){
-        String alarmOn;
-        SharedPreferences settings;
-        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
-        alarmOn = settings.getString(alarm, null); //2
-        //assert alarmOn != null;
-        if (alarmOn != null) {
-            if (alarmOn.equals(on)){
 
-                Toast.makeText(getApplicationContext(),"Theater Mode On",Toast.LENGTH_LONG).show();
-
-                SharedPreferences.Editor editor;
-                settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
-                editor = settings.edit(); //2
-                editor.clear();
-                editor.commit();
-            }
-            else{
-
-            }
-        }
     }
 
     @Override
@@ -194,6 +172,32 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         }
 
     }
+    public Intent sendWatch(){
+        if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
+            //
+            Wearable.MessageApi.sendMessage(
+                    wearGoogleApiClient, wearNode.getId(), on, null).setResultCallback(
+
+                    new ResultCallback<MessageApi.SendMessageResult>() {
+                        @Override
+                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+
+                            if (!sendMessageResult.getStatus().isSuccess()) {
+                                Log.e("TAG", "Failed to send message with status code: "
+                                        + sendMessageResult.getStatus().getStatusCode());
+                            }
+                        }
+                    }
+            );
+        }else{
+            Toast.makeText(getApplicationContext(),
+                    "No connection to phone", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),
+                    "Connect watch to phone!", Toast.LENGTH_SHORT).show();
+
+        }
+        return null;
+    }
     public void sendOff(View v) {
         if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
             //
@@ -218,33 +222,6 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
                     "Connect watch to phone!", Toast.LENGTH_SHORT).show();
 
         }
-
-    }
-    public void sendMessage(String message) {
-        if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
-            //
-            Wearable.MessageApi.sendMessage(
-                    wearGoogleApiClient, wearNode.getId(), message, null).setResultCallback(
-
-                    new ResultCallback<MessageApi.SendMessageResult>() {
-                        @Override
-                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
-
-                            if (!sendMessageResult.getStatus().isSuccess()) {
-                                Log.e("TAG", "Failed to send message with status code: "
-                                        + sendMessageResult.getStatus().getStatusCode());
-                            }
-                        }
-                    }
-            );
-        }else{
-            Toast.makeText(getApplicationContext(),
-                    "No connection to phone", Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(),
-                    "Connect watch to phone!", Toast.LENGTH_SHORT).show();
-
-        }
-
 
     }
 
@@ -298,7 +275,7 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         calendaram.set(Calendar.MINUTE, START_TIME_MM);
         calendaram.set(Calendar.SECOND, 0);
         calendaram.set(Calendar.AM_PM, Calendar.PM);
-        Intent myIntent = new Intent(PhoneConfig.this, PhoneConfig.class);
+        Intent myIntent = new Intent(PhoneConfig.this, SendOnMessageToWatch.class);
         SharedPreferences settings;
         SharedPreferences.Editor editor;
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
@@ -366,6 +343,34 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(),                     "Error, not connected to phone!", Toast.LENGTH_SHORT).show();
     }
+    class SendToDataLayerThread extends Thread {
+        String path;
+        String message;
 
+        // Constructor to send a message to the data layer
+        SendToDataLayerThread(String p) {
+            path = p;
+
+        }
+
+        public void run() {
+            NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(wearGoogleApiClient).await();
+            for (Node node : nodes.getNodes()) {
+                MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(wearGoogleApiClient, node.getId(), path, null).await();
+                if (result.getStatus().isSuccess()) {
+
+                }
+                else {
+                    // Log an error
+                    Log.v("myTag", "ERROR: failed to send Message");
+                }
+            }
+        }
+    }
+class SendOnMessageToWatch extends Thread {
+    public void run() {
+        new SendToDataLayerThread(on).start();
+    }
+}
 }
 
