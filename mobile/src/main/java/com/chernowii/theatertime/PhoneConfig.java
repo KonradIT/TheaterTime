@@ -172,11 +172,11 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         }
 
     }
-    public Intent sendWatch(){
+    public void sendWatch(String cause, String status){
         if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
             //
             Wearable.MessageApi.sendMessage(
-                    wearGoogleApiClient, wearNode.getId(), on, null).setResultCallback(
+                    wearGoogleApiClient, wearNode.getId(), cause, status.getBytes()).setResultCallback(
 
                     new ResultCallback<MessageApi.SendMessageResult>() {
                         @Override
@@ -196,7 +196,7 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
                     "Connect watch to phone!", Toast.LENGTH_SHORT).show();
 
         }
-        return null;
+
     }
     public void sendOff(View v) {
         if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
@@ -268,14 +268,13 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         mTimePicker.setTitle("Select Stopping Time");
         mTimePicker.show();
     }
-
     public void setStartTimeConfig(View v){
-        Calendar calendaram = Calendar.getInstance();
-        calendaram.set(Calendar.HOUR_OF_DAY, START_TIME_HH);
-        calendaram.set(Calendar.MINUTE, START_TIME_MM);
-        calendaram.set(Calendar.SECOND, 0);
-        calendaram.set(Calendar.AM_PM, Calendar.PM);
-        Intent myIntent = new Intent(PhoneConfig.this, SendOnMessageToWatch.class);
+        sendWatch("/start_time_hh", String.valueOf(START_TIME_HH));
+        sendWatch("/start_time_mm", String.valueOf(START_TIME_MM));
+        sendWatch("/stop_time_hh", String.valueOf(STOP_TIME_HH));
+        sendWatch("/stop_time_mm", String.valueOf(STOP_TIME_MM));
+        sendWatch("/setalarm", "nothing");
+        Toast.makeText(getApplicationContext(),"Time configuration saved!",Toast.LENGTH_LONG).show();
         SharedPreferences settings;
         SharedPreferences.Editor editor;
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
@@ -283,11 +282,6 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
 
         editor.putString(alarm, on);
         editor.commit();
-        PendingIntent pendingIntentam = PendingIntent.getActivity(PhoneConfig.this, 0, myIntent, 0);
-        AlarmManager alarmManageram = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManageram.set(AlarmManager.RTC, calendaram.getTimeInMillis(), pendingIntentam);
-        Toast.makeText(getApplicationContext(),"Time configuration saved!",Toast.LENGTH_LONG).show();
-
         settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
         editor = settings.edit(); //2
 
@@ -302,6 +296,7 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         stopTime = settings.getString(stop, null); //2
         TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
         currentTimer.setText(startTime + " - " + stopTime);
+
     }
     //config
 
@@ -343,34 +338,8 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(),                     "Error, not connected to phone!", Toast.LENGTH_SHORT).show();
     }
-    class SendToDataLayerThread extends Thread {
-        String path;
-        String message;
 
-        // Constructor to send a message to the data layer
-        SendToDataLayerThread(String p) {
-            path = p;
 
-        }
 
-        public void run() {
-            NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(wearGoogleApiClient).await();
-            for (Node node : nodes.getNodes()) {
-                MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(wearGoogleApiClient, node.getId(), path, null).await();
-                if (result.getStatus().isSuccess()) {
-
-                }
-                else {
-                    // Log an error
-                    Log.v("myTag", "ERROR: failed to send Message");
-                }
-            }
-        }
-    }
-class SendOnMessageToWatch extends Thread {
-    public void run() {
-        new SendToDataLayerThread(on).start();
-    }
-}
 }
 

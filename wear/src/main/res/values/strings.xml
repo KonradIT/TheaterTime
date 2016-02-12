@@ -2,4 +2,6 @@
     <string name="app_name">Theater Time</string>
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>
+    <string name="title_activity_theater_mode_on">TheaterModeOn</string>
+    <string name="title_activity_theater_mode_off">TheaterModeOff</string>
 </resources>
