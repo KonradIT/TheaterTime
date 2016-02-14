@@ -69,9 +69,9 @@ public class off extends BroadcastReceiver {
                         public void onResult(MessageApi.SendMessageResult sendMessageResult) {
                             if (!sendMessageResult.getStatus().isSuccess()) {
 
-                                Toast.makeText(context, "FAILED TO SEND THEATER COMMAND!", Toast.LENGTH_SHORT).show();
+
                             } else {
-                                Toast.makeText(context, "Theater ON!", Toast.LENGTH_SHORT).show();
+
                             }
 
                         }

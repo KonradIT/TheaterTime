@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -144,7 +146,19 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
 
         return super.onOptionsItemSelected(item);
     }
+public void copyIntentOn(View v){
+    ClipboardManager clipboard = (ClipboardManager)
+            getSystemService(Context.CLIPBOARD_SERVICE);
+    ClipData clip = ClipData.newPlainText("com.chernowii.theatertime.THEATER_ON", "com.chernowii.theatertime.THEATER_ON");
+    clipboard.setPrimaryClip(clip);
+}
 
+    public void copyIntentOff(View v){
+        ClipboardManager clipboard = (ClipboardManager)
+                getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("com.chernowii.theatertime.THEATER_OFF", "com.chernowii.theatertime.THEATER_OFF");
+        clipboard.setPrimaryClip(clip);
+    }
     public void sendOn(View v) {
         if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
             //
