@@ -48,8 +48,6 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     public int STOP_TIME_MM = 00;
     Node wearNode;
     GoogleApiClient wearGoogleApiClient;
-    Node wearTwoNode;
-    GoogleApiClient wearTwoGoogleApiClient;
     private boolean mResolvingError=false;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
