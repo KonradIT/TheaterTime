@@ -22,11 +22,11 @@ import java.util.HashSet;
 /**
  * Created by Konrad Iturbe on 02/13/16.
  */
-public class on extends BroadcastReceiver {
+public class off extends BroadcastReceiver {
     Context context;
-    public static final String TAP_ACTION_PATH = "/on";
+    public static final String TAP_ACTION_PATH = "/off";
     private static final String TAG = "NotificationReceiver";
-GoogleApiClient mGoogleApiClient;
+    GoogleApiClient mGoogleApiClient;
     public void onReceive(Context context, Intent paramIntent) {
         mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(Wearable.API)

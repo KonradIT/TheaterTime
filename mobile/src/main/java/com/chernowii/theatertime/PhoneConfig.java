@@ -71,6 +71,7 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         }
 
 
+
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isFirstRun", false).commit();
         wearGoogleApiClient = new GoogleApiClient.Builder(this)

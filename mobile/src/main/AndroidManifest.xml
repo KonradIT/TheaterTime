@@ -27,6 +27,11 @@
                             <action android:name="com.chernowii.theatertime.THEATER_ON" />
                         </intent-filter>
                     </receiver>
+        <receiver android:enabled="true" android:name=".off">
+            <intent-filter>
+                <action android:name="com.chernowii.theatertime.THEATER_OFF" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".Welcome"
             android:label="@string/title_activity_welcome"
