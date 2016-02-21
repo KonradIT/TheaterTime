@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import com.google.android.gms.wearable.MessageEvent;
@@ -47,6 +48,8 @@ public class ListenerForPhone extends WearableListenerService {
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
+            Settings.Global.putString(getContentResolver(), "theater_mode_on", "1");
+            Toast.makeText(getApplicationContext(),"ON",Toast.LENGTH_SHORT).show();
         }
 
         if (messageEvent.getPath().equals(off)) {
@@ -61,6 +64,8 @@ public class ListenerForPhone extends WearableListenerService {
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
+            Settings.Global.putString(getContentResolver(), "theater_mode_on", "0");
+            Toast.makeText(getApplicationContext(),"OFF",Toast.LENGTH_SHORT).show();
 
         }
         if (messageEvent.getPath().equals(START_TIME_HH)){

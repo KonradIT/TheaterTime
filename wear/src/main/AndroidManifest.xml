@@ -3,6 +3,8 @@
     package="com.chernowii.theatertime">
 
     <uses-feature android:name="android.hardware.type.watch" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
 
     <application
         android:allowBackup="true"

@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Theater Time is an automation tool for Theater Mode in Android Wear watches, you can turn it on/off from your phone using the Widget or by setting a start and stop timer for Theater mode, so your watch does not waste battery while you sleep, work...\nThe Android Wear watch needs to be rooted in order for this app to control the Theater Mode, you can find root guides on XDA-developers.com for your specific Android Wear watch. The phone does not need root access. \n\nComing soon:\n*Tasker triggers\n*Widget\n*Intents\n\nClick start to use the app!"
+        android:text="Theater Time is an automation tool for Theater Mode in Android Wear watches, you can turn it on/off from your phone using the Widget, use the URI intents or by setting a start and stop timer for Theater mode, so your watch does not waste battery while you sleep, work...\nThe Android Wear watch needs to be rooted in order for this app to control the Theater Mode, you can find root guides on XDA-developers.com for your specific Android Wear watch. The phone does not need root access. \n\nClick start to use the app!"
         android:id="@+id/textView8"
         android:layout_below="@+id/textView3"
         android:layout_alignStart="@+id/scrollView"
