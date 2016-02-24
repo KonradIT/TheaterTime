@@ -4,7 +4,7 @@ Theater Time is an app to automate the Theater mode found in Android Wear wearab
 
 **NOTE: The watch needs to be rooted** in order for the app to work, you can find root guides for your watch on XDA.
 
-![](http://i.imgur.com/oaqWll7.png)
+![](http://i.imgur.com/oaqWll7.png?2)
 
 ##Features:
 
