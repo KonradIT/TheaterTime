@@ -17,9 +17,6 @@ import java.util.List;
  */
 public class AutomateItPlugin extends com.smarterapps.automateitplugin.sdk.PluginAction{
 
-    public static final String BROADCAST_ON = "com.chernowii.theatertime.THEATER_ON";
-    public static final String BROADCAST_OFF = "com.chernowii.theatertime.THEATER_OFF";
-
     private static final int FIELD_ID_DURATION_LONG = 2;
 
     @Override
