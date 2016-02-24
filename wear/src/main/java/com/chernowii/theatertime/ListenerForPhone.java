@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ public class ListenerForPhone extends WearableListenerService {
     private static final String STOP_TIME_HH = "/stop_time_hh";
     private static final String STOP_TIME_MM = "/stop_time_mm";
     private static final String setAlarm = "/setalarm";
+    private static final String wifiOn = "/wifion";
+    private static final String wifiOff = "/wifiOff";
 
     public int SettingStartHH = 0;
     public int SettingStartMM = 0;
@@ -48,7 +51,6 @@ public class ListenerForPhone extends WearableListenerService {
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
-            Settings.Global.putString(getContentResolver(), "theater_mode_on", "1");
             Toast.makeText(getApplicationContext(),"ON",Toast.LENGTH_SHORT).show();
         }
 
@@ -64,7 +66,6 @@ public class ListenerForPhone extends WearableListenerService {
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
-            Settings.Global.putString(getContentResolver(), "theater_mode_on", "0");
             Toast.makeText(getApplicationContext(),"OFF",Toast.LENGTH_SHORT).show();
 
         }
@@ -104,6 +105,14 @@ public class ListenerForPhone extends WearableListenerService {
             AlarmManager alarmManagerTwo = (AlarmManager)getSystemService(ALARM_SERVICE);
             alarmManagerTwo.set(AlarmManager.RTC, calendarTwo.getTimeInMillis(), PendingIntentTwo);
 
+        }
+        if (messageEvent.getPath().equals(wifiOn)){
+            WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            wifi.setWifiEnabled(true);
+        }
+        if (messageEvent.getPath().equals(wifiOff)){
+            WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            wifi.setWifiEnabled(false);
         }
 
 

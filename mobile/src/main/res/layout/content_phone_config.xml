@@ -128,10 +128,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:progressTint="@color/colorPrimary"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/theaterOff"
+        android:progress="100"
+        android:layout_below="@+id/wifiBox"
         android:layout_alignParentStart="true"
-        android:progress="100" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -215,6 +215,27 @@
             android:layout_below="@+id/textView12"
             android:onClick="copyIntentOff"
             android:layout_toEndOf="@+id/copyon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="WiFi settings (set when theater time goes on/off):"
+            android:id="@+id/textView13"
+            android:layout_below="@+id/theaterOff"
+            android:layout_alignParentStart="true"
+            android:textColor="#ffffff" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/wifiBox"
+            android:checked="false"
+            android:text="Turn WiFi OFF"
+            android:layout_below="@+id/textView13"
+            android:layout_alignParentStart="true"
+            android:buttonTint="#ffffff"
+            android:textColor="#ffffff" />
     </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

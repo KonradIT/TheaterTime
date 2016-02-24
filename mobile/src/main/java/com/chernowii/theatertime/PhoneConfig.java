@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -58,6 +59,8 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
     public static final String start = "start_string";
     public static final String stop = "stop_string";
     public int WELCOME;
+    private static final String wifiOn = "/wifion";
+    private static final String wifiOff = "/wifiOff";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,6 +163,10 @@ public void copyIntentOn(View v){
         clipboard.setPrimaryClip(clip);
     }
     public void sendOn(View v) {
+        boolean isChecked = ((CheckBox) findViewById(R.id.wifiBox)).isChecked();
+        if (isChecked){
+            sendWiFi("wifiOff");
+        }
         if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
             //
             Wearable.MessageApi.sendMessage(
@@ -212,10 +219,41 @@ public void copyIntentOn(View v){
 
     }
     public void sendOff(View v) {
+        boolean isChecked = ((CheckBox) findViewById(R.id.wifiBox)).isChecked();
+        if (isChecked){
+            sendWiFi("wifiOn");
+        }
         if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
             //
             Wearable.MessageApi.sendMessage(
                     wearGoogleApiClient, wearNode.getId(), off, null).setResultCallback(
+
+                    new ResultCallback<MessageApi.SendMessageResult>() {
+                        @Override
+                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+
+                            if (!sendMessageResult.getStatus().isSuccess()) {
+                                Log.e("TAG", "Failed to send message with status code: "
+                                        + sendMessageResult.getStatus().getStatusCode());
+                            }
+                        }
+                    }
+            );
+        }else{
+            Toast.makeText(getApplicationContext(),
+                    "No connection to phone", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),
+                    "Connect watch to phone!", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    public void sendWiFi(String state) {
+        if (wearNode != null && wearGoogleApiClient!=null && wearGoogleApiClient.isConnected()) {
+            //
+            Wearable.MessageApi.sendMessage(
+                    wearGoogleApiClient, wearNode.getId(), state, null).setResultCallback(
 
                     new ResultCallback<MessageApi.SendMessageResult>() {
                         @Override

@@ -20,17 +20,15 @@ public class WidgetService extends AppWidgetProvider {
         for(int i=0; i<appWidgetIds.length; i++){
             int currentWidgetId = appWidgetIds[i];
 
+            Intent intent = new Intent(context, on.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, currentWidgetId);  // Identifies the particular widget...
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+// Make the pending intent unique...
+            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+            PendingIntent pendIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            Intent intent = new Intent(BROADCAST_ON);
-            Bundle extras = new Bundle();
-
-            intent.putExtras(extras);
-            context.sendBroadcast(intent);
-
-            PendingIntent pending = PendingIntent.getActivity(context, 0,intent, 0);
-            RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.widget_ui);
-
-            views.setOnClickPendingIntent(R.id.wtheateron, pending);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_ui);
+            views.setOnClickPendingIntent(R.id.wtheateron, pendIntent);
             appWidgetManager.updateAppWidget(currentWidgetId,views);
             Toast.makeText(context, "widget added", Toast.LENGTH_SHORT).show();
         }
