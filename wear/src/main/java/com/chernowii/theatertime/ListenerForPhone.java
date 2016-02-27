@@ -39,6 +39,18 @@ public class ListenerForPhone extends WearableListenerService {
     public void onMessageReceived(MessageEvent messageEvent) {
         if (messageEvent.getPath().equals(on)) {
             try {
+                Process su = Runtime.getRuntime().exec("su");
+                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+                outputStream.writeBytes("input keyevent 26\n");
+                outputStream.flush();
+                outputStream.writeBytes("exit\n");
+                outputStream.flush();
+                su.waitFor();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+
             Process su = Runtime.getRuntime().exec("su");
             DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
             String sqliteON = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \"update global set value='1' where name='theater_mode_on';\" ";
