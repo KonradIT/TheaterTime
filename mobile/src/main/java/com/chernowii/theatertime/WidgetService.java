@@ -20,8 +20,8 @@ public class WidgetService extends AppWidgetProvider {
         for(int i=0; i<appWidgetIds.length; i++){
             int currentWidgetId = appWidgetIds[i];
 
-            Intent intent = new Intent(context, on.class);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, currentWidgetId);  // Identifies the particular widget...
+            Intent intent = new Intent(context, PhoneConfig.class);
+            intent.putExtra("widget","on");  // Identifies the particular widget...
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 // Make the pending intent unique...
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
