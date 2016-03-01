@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.chernowii.theatertime.NoRootAvailable"
+    tools:deviceIds="wear_square">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Watch is not rooted!"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
+
+    <ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="This watch appears not to be rooted, which is a basic requirement for this app to work, to root your watch please refer to the guides found by tapping the 3 dot menu in Theater Time app on your smartphone and choose Root Your Watch option"
+            android:id="@+id/textView2" />
+    </LinearLayout>
+</ScrollView>
+
+</LinearLayout>

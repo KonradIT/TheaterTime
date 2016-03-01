@@ -4,5 +4,6 @@
     <string name="hello_square">Hello Square World!</string>
     <string name="title_activity_theater_mode_on">TheaterModeOn</string>
     <string name="title_activity_theater_mode_off">TheaterModeOff</string>
+    <string name="title_activity_no_root_available">NoRootAvailable</string>
 
 </resources>

@@ -29,56 +29,75 @@ public class ListenerForPhone extends WearableListenerService {
     private static final String setAlarm = "/setalarm";
     private static final String wifiOn = "/wifion";
     private static final String wifiOff = "/wifiOff";
-
+    private static final String charge_on = "/charge_on";
+    private static final String charge_off = "/charge_off";
     public int SettingStartHH = 0;
     public int SettingStartMM = 0;
     public int SettingStopHH = 0;
     public int SettingStopMM = 0;
+    public boolean isWatchRooted = false;
+
+    //charge reaction prefs
+    public static final String CHARGE_PREFS = "ChargePreferences";
+    public static final String prefs_charge = "charge";
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
+        if(RootUtils.isDeviceRooted()){
+           isWatchRooted=true;
+        }
+        else{
+            Intent noroot = new Intent(this, NoRootAvailable.class);
+            this.startActivity(noroot);
+        }
         if (messageEvent.getPath().equals(on)) {
-            try {
-                Process su = Runtime.getRuntime().exec("su");
-                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("input keyevent 26\n");
-                outputStream.flush();
-                outputStream.writeBytes("exit\n");
-                outputStream.flush();
-                su.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
+            if(isWatchRooted){
+                try {
+                    Process su = Runtime.getRuntime().exec("su");
+                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+                    outputStream.writeBytes("input keyevent 26\n");
+                    outputStream.flush();
+                    outputStream.writeBytes("exit\n");
+                    outputStream.flush();
+                    su.waitFor();
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
 
-            Process su = Runtime.getRuntime().exec("su");
-            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-            String sqliteON = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \"update global set value='1' where name='theater_mode_on';\" ";
-            outputStream.writeBytes("settings put global theater_mode_on 1\n" + sqliteON + "\n");
-            outputStream.flush();
+                    Process su = Runtime.getRuntime().exec("su");
+                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+                    String sqliteON = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \"update global set value='1' where name='theater_mode_on';\" ";
+                    outputStream.writeBytes("settings put global theater_mode_on 1\n" + sqliteON + "\n");
+                    outputStream.flush();
 
-            outputStream.writeBytes("exit\n");
-            outputStream.flush();
-            su.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+                    outputStream.writeBytes("exit\n");
+                    outputStream.flush();
+                    su.waitFor();
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(),"ON",Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(getApplicationContext(),"ON",Toast.LENGTH_SHORT).show();
+
         }
 
         if (messageEvent.getPath().equals(off)) {
-            try {
-                Process su = Runtime.getRuntime().exec("su");
-                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                outputStream.writeBytes("input keyevent 26\n");
-                outputStream.flush();
-                outputStream.writeBytes("exit\n");
-                outputStream.flush();
-                su.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+            if(isWatchRooted){
+                try {
+                    Process su = Runtime.getRuntime().exec("su");
+                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+                    outputStream.writeBytes("input keyevent 26\n");
+                    outputStream.flush();
+                    outputStream.writeBytes("exit\n");
+                    outputStream.flush();
+                    su.waitFor();
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(),"OFF",Toast.LENGTH_SHORT).show();
+
             }
-            Toast.makeText(getApplicationContext(),"OFF",Toast.LENGTH_SHORT).show();
 
         }
         if (messageEvent.getPath().equals(START_TIME_HH)){
@@ -125,6 +144,26 @@ public class ListenerForPhone extends WearableListenerService {
         if (messageEvent.getPath().equals(wifiOff)){
             WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
             wifi.setWifiEnabled(false);
+        }
+        if (messageEvent.getPath().equals(charge_on)){
+            SharedPreferences settings;
+            SharedPreferences.Editor editor;
+            settings = getApplicationContext().getSharedPreferences(CHARGE_PREFS, Context.MODE_PRIVATE); //1
+            editor = settings.edit(); //2
+
+            editor.putString(prefs_charge, charge_on);
+            editor.commit();
+
+        }
+        if (messageEvent.getPath().equals(charge_off)){
+            SharedPreferences settings;
+            SharedPreferences.Editor editor;
+            settings = getApplicationContext().getSharedPreferences(CHARGE_PREFS, Context.MODE_PRIVATE); //1
+            editor = settings.edit(); //2
+
+            editor.putString(prefs_charge, charge_off);
+            editor.commit();
+
         }
 
 

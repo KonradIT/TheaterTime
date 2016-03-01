@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,6 +41,8 @@ import java.util.Calendar;
 public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private static final String on = "/on";
     private static final String off = "/off";
+    private static final String charge_on = "/charge_on";
+    private static final String charge_off = "/charge_off";
     public static final String CURRENT_START_ALARM = "PrefsFile";
     public String START_TIME = "00:00";
     public String STOP_TIME = "00:00";
@@ -96,8 +99,22 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
         stopTime = settings.getString(stop, null); //2
         TextView currentTimer = (TextView)findViewById(R.id.currentTimer);
         currentTimer.setText(startTime + " - " + stopTime);
+        CheckBox reactToCharge = (CheckBox)findViewById(R.id.chargingEvent);
+        reactToCharge.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
+                                                     @Override
+                                                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                         if (buttonView.isChecked()) {
+                                                            Toast.makeText(getApplicationContext(),"React to charge",Toast.LENGTH_SHORT).show();
+                                                            sendWatch(charge_on,charge_on);
+                                                         } else {
+                                                             Toast.makeText(getApplicationContext(),"Not reacting to charge",Toast.LENGTH_SHORT).show();
+                                                             sendWatch(charge_off, charge_off);
 
+                                                         }
+                                                }
+                                            }
+        );
 
     }
 
@@ -139,6 +156,28 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
                                 Intent mailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                                         "mailto", "mail@chernowii.com", null));
                                 startActivity(mailIntent);
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .show();
+
+                return true;
+            case R.id.action_root:
+                new AlertDialog.Builder(this)
+                        .setTitle("Root Your Android Wear watch")
+                        .setMessage("Android Wear is no different from Android when it comes to hacking and rooting, you will need to first free your Wear watch (unlock it), flash a custom recovery such as TWRP, and flash the wear SuperSU zip file. \nChoose LP (Lollipop, 5.X) or MM (Marshmallow, 6.X) tutorials, you will need a computer and the ADB tools.\n Remember, Google Search is your friend!")
+
+                        .setNeutralButton("Tutorial for LP", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.julianevansblog.com/2015/02/how-to-root-your-android-wear-to-modify-your-device.html"));
+                                startActivity(webIntent);
+                            }
+                        })
+
+                        .setNegativeButton("Tutorial for MM", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/apps/supersu/android-wear-6-0-1-root-squashfs-t3319097/post65428079#post65428079"));
+                                startActivity(webIntent);
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_info)

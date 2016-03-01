@@ -10,13 +10,14 @@ Theater Time is an app to automate the Theater mode found in Android Wear wearab
 
 * Turn On or Off the Theater Mode on your watch via Intent URIs, to use with Tasker, Llama...
 * Timer that turns on theater mode at a specified time of the day and turns it off at another time
+* Turn on/off Theater Mode when the watch is charging/removed from cradle
 * Widget to control Theater Mode **WIP**
 * Tasker integration **WIP**
 * AutomateIt plugin **WIP**
 
 ##Download
 
-Google Play: 
+Google Play: https://play.google.com/store/apps/details?id=com.chernowii.theatertime
 
 Releases: http://github.com/KonradIT/TheaterTime/releases
 

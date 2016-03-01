@@ -129,7 +129,7 @@
         android:id="@+id/progressBar"
         android:progressTint="@color/colorPrimary"
         android:progress="100"
-        android:layout_below="@+id/wifiBox"
+        android:layout_below="@+id/chargingEvent"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
@@ -224,7 +224,8 @@
             android:id="@+id/textView13"
             android:layout_below="@+id/theaterOff"
             android:layout_alignParentStart="true"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:layout_marginTop="10dp" />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -236,6 +237,37 @@
             android:layout_alignParentStart="true"
             android:buttonTint="#ffffff"
             android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="React to watch charging:"
+            android:id="@+id/textView14"
+            android:layout_below="@+id/wifiBox"
+            android:layout_alignParentStart="true"
+            android:textColor="#ffffff"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turn On Theater Time when the watch is charging, turn Off Theater Time when the watch is not carging anymore."
+            android:id="@+id/textView15"
+            android:layout_below="@+id/textView14"
+            android:layout_alignParentStart="true"
+            android:textColor="#ffffff" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="React to charging"
+            android:id="@+id/chargingEvent"
+            android:layout_below="@+id/textView15"
+            android:layout_alignParentStart="true"
+            android:checked="false"
+            android:textColor="#ffffff"
+            android:buttonTint="#ffffff" />
     </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

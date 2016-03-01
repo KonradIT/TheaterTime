@@ -3,6 +3,7 @@
     package="com.chernowii.theatertime">
 
     <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
@@ -13,7 +14,7 @@
         android:theme="@android:style/Theme.DeviceDefault">
         <activity
             android:name=".TheaterWear"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
 
         <service android:name=".ListenerForPhone">
             <intent-filter>
@@ -21,12 +22,22 @@
             </intent-filter>
         </service>
 
+        <receiver android:name=".ChargeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".TheaterModeOn"
-            android:label="@string/title_activity_theater_mode_on"></activity>
+            android:label="@string/title_activity_theater_mode_on" />
         <activity
             android:name=".TheaterModeOff"
-            android:label="@string/title_activity_theater_mode_off"></activity>
+            android:label="@string/title_activity_theater_mode_off" />
+        <activity
+            android:name=".NoRootAvailable"
+            android:label="@string/title_activity_no_root_available"></activity>
     </application>
 
 </manifest>

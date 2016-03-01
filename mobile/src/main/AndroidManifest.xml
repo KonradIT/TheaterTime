@@ -31,6 +31,7 @@
                 <action android:name="com.chernowii.theatertime.THEATER_OFF" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".Welcome"
             android:label="@string/title_activity_welcome"
