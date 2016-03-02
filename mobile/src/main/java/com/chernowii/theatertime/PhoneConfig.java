@@ -184,6 +184,22 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
                         .show();
 
                 return true;
+            case R.id.action_more_apps:
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pub:Konrad Iturbe")));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/search?q=pub:Konrad Iturbe")));
+                }
+
+                return true;
+            case R.id.action_donate:
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.chernowii.donate")));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.chernowii.donate")));
+                }
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

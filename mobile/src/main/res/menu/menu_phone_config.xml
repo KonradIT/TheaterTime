@@ -12,4 +12,14 @@
         android:orderInCategory="100"
         android:title="@string/action_root"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_more_apps"
+        android:orderInCategory="100"
+        android:title="More apps"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_donate"
+        android:orderInCategory="100"
+        android:title="Donate"
+        app:showAsAction="never" />
 </menu>
