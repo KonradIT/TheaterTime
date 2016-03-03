@@ -15,4 +15,5 @@
     <string name="webpage">Visit my site</string>
     <string name="mail">Email me!</string>
     <string name="action_root">Root your watch</string>
+    <string name="title_activity_tasker_settings">TaskerSettings</string>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.chernowii.theatertime">
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -20,26 +21,64 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TaskerSettings"
+            android:exported="false"
+            android:label="Theater Time Tasker"
+            android:enabled="false"
+            android:icon="@mipmap/ic_launcher"></activity>
+        <!--
+             This is the activity-alias, which the host perceives as being the plug-in's Edit Activity.
+             This layer of indirection helps ensure the public API for the plug-in is stable.
+        -->
+        <activity-alias
+            android:name=".PluginActivity"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Theater Time Tasker"
+            android:targetActivity=".TaskerSettings">
+            <intent-filter>
 
-        <receiver android:enabled="true" android:name=".on">
-                        <intent-filter>
-                            <action android:name="com.chernowii.theatertime.THEATER_ON" />
-                        </intent-filter>
-                    </receiver>
-        <receiver android:enabled="true" android:name=".off">
+                <!-- For a plug-in setting, use EDIT_SETTING instead. -->
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            </intent-filter>
+        </activity-alias>
+
+        <receiver
+            android:name=".on"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.chernowii.theatertime.THEATER_ON" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".off"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="com.chernowii.theatertime.THEATER_OFF" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".TaskerReceiver"
+            android:exported="true"
+            android:process=":background"
+            tools:ignore="ExportedReceiver">
 
+            <!-- this Intent filter allows the plug-in to discovered by the host. -->
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".Welcome"
             android:label="@string/title_activity_welcome"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        
+
+
     </application>
 
 </manifest>
