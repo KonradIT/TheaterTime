@@ -186,7 +186,7 @@ public class PhoneConfig extends AppCompatActivity implements GoogleApiClient.Co
                 return true;
             case R.id.action_more_apps:
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pub:Konrad Iturbe- Chernowii")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pub:Konrad Iturbe - Chernowii")));
                 } catch (android.content.ActivityNotFoundException anfe) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/search?q=pub:Konrad Iturbe - Chernowii")));
                 }
