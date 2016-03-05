@@ -15,22 +15,24 @@ import android.widget.Toast;
  * Created by Konrad Iturbe on 02/14/16.
  */
 public class WidgetService extends AppWidgetProvider {
-    public static final String BROADCAST_ON = "com.chernowii.theatertime.THEATER_ON";
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,int[] appWidgetIds) {
         for(int i=0; i<appWidgetIds.length; i++){
             int currentWidgetId = appWidgetIds[i];
+            Intent intent_on = new Intent();
+            intent_on.setAction("com.chernowii.theatertime.THEATER_ON");
 
-            Intent intent = new Intent(context, PhoneConfig.class);
-            intent.putExtra("widget","on");  // Identifies the particular widget...
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-// Make the pending intent unique...
-            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-            PendingIntent pendIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intent_off = new Intent();
+            intent_off.setAction("com.chernowii.theatertime.THEATER_OFF");
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_ui);
-            views.setOnClickPendingIntent(R.id.wtheateron, pendIntent);
-            appWidgetManager.updateAppWidget(currentWidgetId,views);
-            Toast.makeText(context, "widget added", Toast.LENGTH_SHORT).show();
+            PendingIntent theater_on = PendingIntent.getActivity(context, 0, intent_on, 0);
+            PendingIntent theater_off = PendingIntent.getActivity(context, 0, intent_off, 0);
+
+            RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.widget_ui);
+
+            views.setOnClickPendingIntent(R.id.wtheateron, theater_on);
+            views.setOnClickPendingIntent(R.id.wtheateroff, theater_off);
+
+            appWidgetManager.updateAppWidget(currentWidgetId, views);
         }
     }
 }
