@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 public class TaskerSettings extends AbstractPluginActivity {
     public String message2 = "";
-
+    public String status = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +44,14 @@ public class TaskerSettings extends AbstractPluginActivity {
 
  public Bundle getResultBundle() {
         Bundle result = null;
-
-        final String message = String.valueOf(((CheckBox) findViewById(R.id.taskerStatus)).isChecked());
-        if (0 < message.length()) {
-            result = PluginBundleValues.generateBundle(getApplicationContext(), message);
+        if (((CheckBox) findViewById(R.id.taskerStatus)).isChecked()) {
+            status = "Theater Mode: ON";
+            result = PluginBundleValues.generateBundle(getApplicationContext(), status);
         }
+        else{
+            result = PluginBundleValues.generateBundle(getApplicationContext(), "Theater Time: OFF");
 
+        }
         return result;
     }
 
