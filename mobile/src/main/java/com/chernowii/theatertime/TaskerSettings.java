@@ -45,7 +45,7 @@ public class TaskerSettings extends AbstractPluginActivity {
  public Bundle getResultBundle() {
         Bundle result = null;
         if (((CheckBox) findViewById(R.id.taskerStatus)).isChecked()) {
-            status = "Theater Mode: ON";
+            status = "Theater Time ON";
             result = PluginBundleValues.generateBundle(getApplicationContext(), status);
         }
         else{

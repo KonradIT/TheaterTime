@@ -25,13 +25,13 @@ public final class TaskerReceiver extends AbstractPluginSettingReceiver {
 
     @Override
     protected void firePluginSetting(@NonNull final Context context, @NonNull final Bundle bundle) {
-        if(PluginBundleValues.getMessage(bundle).equals("true")){
+        if(PluginBundleValues.getMessage(bundle).equals("Theater Time: ON")){
             Toast.makeText(context,"Theater ON",Toast.LENGTH_SHORT).show();
             Intent broadcast = new Intent();
             broadcast.setAction("com.chernowii.theatertime.THEATER_ON");
             context.sendBroadcast(broadcast);
         }
-        if(PluginBundleValues.getMessage(bundle).equals("false")){
+        if(PluginBundleValues.getMessage(bundle).equals("Theater Time: OFF")){
             Toast.makeText(context,"Theater OFF",Toast.LENGTH_SHORT).show();
             Intent broadcast = new Intent();
             broadcast.setAction("com.chernowii.theatertime.THEATER_OFF");
